@@ -1,0 +1,26 @@
+### Teste 1: Ver todos os produtos (GET)
+GET http://localhost:8080/meus-produtos
+
+### Teste 2: Criar um produto novo (POST)
+POST http://localhost:8080/meus-produtos
+Content-Type: application/json
+
+### 1. Criar a Categoria (IMPORTANTE: Faz isto primeiro!)
+POST http://localhost:8080/categorias
+Content-Type: application/json
+
+{
+  "nome": "Eletrónica"
+}
+
+### 2. Criar um Produto associado à Categoria (Repara no JSON novo!)
+POST http://localhost:8080/meus-produtos
+Content-Type: application/json
+
+{
+  "nome": "Xbox Series X",
+  "preco": 450.00,
+  "categoria": {
+    "id": 1
+  }
+}

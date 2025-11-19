@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Minha Loja Java</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body text-center">
+                    <h4 class="card-title">💰 Valor Total em Stock</h4>
+                    <p class="display-4 fw-bold mb-0"
+                       th:text="${valorTotalStock} + ' €'">
+                        0.0 €
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="/loja" method="GET" class="mb-3 mt-3">
+        <div class="input-group">
+            <input type="text" name="keyword" class="form-control" placeholder="🔍 Pesquisar produto...">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+            <a href="/loja" class="btn btn-outline-secondary">Limpar</a>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>📦 Stock da Loja</h1>
+        <div>
+            <a href="/loja/categorias" class="btn btn-info text-white me-2">
+                📂 Gerir Categorias
+            </a>
+            <a href="/loja/novo" class="btn btn-success">
+                ➕ Novo Produto
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Valor Total</th>
+                    <th>Categoria</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="produto : ${listaProdutos}"
+                    th:classappend="${produto.quantidade < 3} ? 'table-danger' : ''">
+
+                    <td th:text="${produto.id}">1</td>
+                    <td class="fw-bold" th:text="${produto.nome}">Exemplo</td>
+                    <td th:text="${produto.preco} + ' €'">99.99</td>
+
+                    <td>
+                        <span th:text="${produto.quantidade}">10</span> un.
+                        <span th:if="${produto.quantidade < 3}" class="badge bg-danger ms-1">⚠️ Baixo!</span>
+                    </td>
+
+                    <td class="fw-bold text-success"
+                        th:text="${produto.preco * produto.quantidade} + ' €'">
+                        0.0 €
+                    </td>
+
+                    <td>
+                        <span class="badge bg-primary" th:text="${produto.categoria?.nome}">Geral</span>
+                    </td>
+
+                    <td class="text-end">
+                        <a th:href="@{/loja/editar/{id}(id=${produto.id})}" class="btn btn-sm btn-outline-primary me-1">
+                            ✏️
+                        </a>
+                        <a th:href="@{/loja/eliminar/{id}(id=${produto.id})}" class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Tens a certeza?');">
+                            🗑️
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
